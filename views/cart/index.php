@@ -11,6 +11,7 @@
     <!-- Cart -->
     <section class="section-wrap cart pt-50 pb-40">
       <div class="container relative">
+        <?php if ($productsInCart): ?>
 
         <div class="table-wrap">
           <table class="shop_table cart table">
@@ -23,7 +24,7 @@
               </tr>
             </thead>
             <tbody>
-            <?php if ($productsInCart): ?> 
+            <form id="quantity" action="" method="post">
              <?php foreach ($products as $product): ?>
               <tr class="cart_item">
                 <td class="product-thumbnail">
@@ -39,28 +40,26 @@
                   </ul> -->
                 </td>
                 <td class="product-price">
-                  <span class="amount"><?php echo $productsInCart[$product['id']]; ?></span>
+                  <span class="amount"><?php echo $product['price']; ?></span>
                 </td>
                 <td class="product-quantity">
                   <div class="quantity buttons_added">
                     <input type="button" value="-" class="minus">
-                    <input type="number" step="1" min="0" value="1" title="Qty" class="input-text qty text">
+                    <input name="product_<?php echo $product['id']; ?>" type="number" step="1" min="0" value="<?php echo $productsInCart[$product['id']]; ?>" title="Qty" class="input-text qty text">
                     <input type="button" value="+" class="plus">
                   </div>
                 </td>
                 <td class="product-subtotal">
-                  <span class="amount"><?php echo $product['price']; ?></span>
+                  <span class="amount"><?php echo $productsInCart[$product['id']]*$product['price']; ?></span>
                 </td>
                 <td class="product-remove">
-                  <a href="cart/delete/<?php echo $product['id']; ?>" class="remove" title="Remove this item">
+                  <a href="/cart/delete/<?php echo $product['id']; ?>" class="remove" title="Remove this item">
                     <i class="ui-close"></i>
                   </a>
                 </td>
               </tr>
               <?php endforeach; ?>
-              <?php else: ?>
-              <p>Корзина пуста</p>
-            <?php endif; ?>
+            </form>
             </tbody>
           </table>
         </div>
@@ -68,16 +67,18 @@
         <div class="row mb-30">
           <div class="col-lg-5">
             <div class="coupon">
+             <form id="coupon" action="" method="post">
               <input type="text" name="coupon_code" id="coupon_code" class="input-text" value placeholder="Код купона">
-              <input type="submit" name="apply_coupon" class="btn btn-md btn-dark btn-button" value="Применить">
+              <input form="coupon" type="submit" name="apply_coupon" class="btn btn-md btn-dark btn-button" value="Применить">
+              </form>
             </div>
           </div>
 
           <div class="col-lg-7">
             <div class="actions">
-              <input type="submit" name="update_cart" value="Обновить Корзину" class="btn btn-md btn-dark btn-button"> <!-- Update Cart -->
+              <input form="quantity" type="submit" name="update_cart" value="Обновить Корзину" class="btn btn-md btn-dark btn-button"> <!-- Update Cart -->
               <div class="wc-proceed-to-checkout">
-                <a href="checkout.html" class="btn btn-md btn-color btn-button"><span>перейти к оформлению заказа</span></a> <!-- proceed to checkout -->
+                <a href="/cart/checkout" class="btn btn-md btn-color btn-button"><span>перейти к оформлению заказа</span></a> <!-- proceed to checkout -->
               </div>
             </div>
           </div>
@@ -85,11 +86,12 @@
 
         <div class="row justify-content-between">
           <div class="col-lg-6 shipping-calculator-form">
+           <form id="calc_ship" action="#" method="post">
             <h2 class="uppercase mb-30">Расчитать стоимость доставки</h2> <!-- Calculate Shipping -->
             <p class="form-row form-row-wide">
               <select name="calc_shipping_country" id="calc_shipping_country" class="country_to_state" rel="calc_shipping_state">
                 <option>Выберите страну…</option>
-                <option value="AF">Afghanistan</option>
+                <option value="AF" selected="selected">Afghanistan</option>
                 <option value="AX">Åland Islands</option>
                 <option value="AL">Albania</option>
                 <option value="DZ">Algeria</option>
@@ -263,7 +265,7 @@
                 <option value="PG">Papua New Guinea</option>
                 <option value="PY">Paraguay</option>
                 <option value="PE">Peru</option>
-                <option value="PH" selected="selected">Philippines</option>
+                <option value="PH">Philippines</option>
                 <option value="PN">Pitcairn</option>
                 <option value="PL">Poland</option>
                 <option value="PT">Portugal</option>
@@ -355,8 +357,9 @@
             </div>
 
             <p>
-              <input type="submit" name="calc_shipping" value="Обновить" class="btn btn-md btn-dark btn-button"> <!-- Update Totals -->
-            </p>                
+              <input form="calc_ship" type="submit" name="calc_shipping" value="Обновить" class="btn btn-md btn-dark btn-button"> <!-- Update Totals -->
+            </p>
+              </form>                
           </div> <!-- end col shipping calculator -->
 
           <div class="col-lg-4">
@@ -368,19 +371,19 @@
                   <tr class="cart-subtotal">
                     <th>Промежуточная Сумма</th> <!-- Cart Subtotal -->
                     <td>
-                      <span class="amount"><?php echo $totalPrice; ?></span>
+                      <span class="amount"><?php if ($productsInCart) echo 'RUB '.($totalPrice-($totalPrice/100*$_SESSION['discount'])); else echo '0'; ?></span>
                     </td>
                   </tr>
                   <tr class="shipping">
                     <th>Доставка</th>
                     <td>
-                      <span>Бесплатная Доставка</span>
+                      <span><?php if ($_SESSION['dostavka']== 0) echo 'Бесплатная Доставка'; else echo 'RUB '.$_SESSION['dostavka']; ?></span>
                     </td>
                   </tr>
                   <tr class="order-total">
                     <th>Итого за Заказ</th> <!-- Order Total -->
                     <td>
-                      <strong><span class="amount"><?php echo $totalPrice; ?></span></strong>
+                      <strong><span class="amount">RUB <?php if ($productsInCart) echo ($totalPrice-($totalPrice/100*$_SESSION['discount']))+$_SESSION['dostavka']; else echo '0'; ?></span></strong>
                     </td>
                   </tr>
                 </tbody>
@@ -391,7 +394,10 @@
 
         </div> <!-- end row -->     
 
-        
+        <?php else: ?>
+              <p>Корзина пуста</p>
+              <div class="pb-120 mb-120"></div>
+            <?php endif; ?>
       </div> <!-- end container -->
     </section> <!-- end cart -->
 

@@ -35,14 +35,14 @@
             <?php endforeach; ?>
         </ul>
      <?php endif; ?>
-      <form id="register" action="#" method="post">
+      <form action="#" method="post">
         <label for="register-input">Почта <abbr class="required" title="required">*</abbr></label> <!-- Email address -->
         <input type="text" name="emailin" id="register-input" value="<?php echo $email; ?>">
 
         <label for="password">Пароль <abbr class="required" title="required">*</abbr></label>
         <input type="password" name="passwordin" id="register-password" value="<?php echo $password; ?>">
 
-        <input type="submit" from="register" name="register" value="Зарегестрироватся" class="btn btn-md btn-dark btn-button">
+        <input type="submit" name="register" value="Зарегестрироватся" class="btn btn-md btn-dark btn-button">
       </form>
       <?php endif; ?>
     </div>

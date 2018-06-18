@@ -13,16 +13,22 @@
       <div class="container relative">
         <div class="row">
         <?php if ($result): ?>
+        <div class="col-6">
          <h1>Заказ оформлен!</h1>
+         <p>В скором времени с вами свяжется оператор</p>
+         </div>
+         <div class="pb-120 mb-120"></div>
          <?php else: ?>
           <div class="ecommerce col">
 
             <div class="row mb-30">
               <div class="col-md-8">
+               <?php if (User::isGuest()): ?>
                 <p class="ecommerce-info">
                   Есть аккаунт? 
-                  <a href="/user/register" class="showlogin">Нажмите здесь, что бы войти</a>
+                  <a href="/user/action" class="showlogin">Нажмите здесь, что бы войти</a>
                 </p>
+                <?php endif; ?>
               </div>
             </div>
 
@@ -382,19 +388,19 @@
                       <tr class="sub-total">
                         <th><strong>Промежуточная Сумма</strong></th>
                         <td>
-                          <strong><span class="amount">RUB <?php echo $totalPrice; ?></span></strong>
+                          <strong><span class="amount">RUB <?php echo ($totalPrice-($totalPrice/100*$_SESSION['discount'])); ?></span></strong>
                         </td>
                       </tr>
                       <tr class="shipping">
                         <th>Доставка</th>
                         <td>
-                          <span>Бесплатная доставка</span>
+                          <span><?php if ($_SESSION['dostavka']== 0) echo 'Бесплатная Доставка'; else echo 'RUB '.$_SESSION['dostavka']; ?></span>
                         </td>
                       </tr>
                       <tr class="order-total">
                         <th><strong>Полная Сумма</strong></th>
                         <td>
-                          <strong><span class="amount">RUB <?php echo $totalPrice; ?></span></strong>
+                          <strong><span class="amount">RUB <?php echo ($totalPrice-($totalPrice/100*$_SESSION['discount']))+$_SESSION['dostavka']; ?></span></strong>
                         </td>
                       </tr>
                     </tbody>
@@ -424,7 +430,7 @@
 
                       <li class="payment_method_paypal">
                         <input id="payment_method_paypal" type="radio" class="input-radio" name="payment_method" value="paypal">
-                        <label for="payment_method_paypal">Палка<!--Paypal--></label>
+                        <label for="payment_method_paypal">Paypal<!--Paypal--></label>
                         <img src="/template/img/shop/paypal.png" alt="">
                         <div class="payment_box payment_method_paypal">
                           <p>

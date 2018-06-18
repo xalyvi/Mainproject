@@ -3,7 +3,7 @@
 class User
 {
     
-    public static function register( $email, $password) {
+    public static function register($email, $password) {
         
         $db = Db::getConnection();
         
@@ -59,18 +59,24 @@ class User
         return false;
     }
     
-    public static function edit($id, $name, $password)
+    public static function edit($id, $name, $email, $street, $cite, $state, $country, $postcode, $phone, $password)
     {
         $db = Db::getConnection();
         
         $sql = "UPDATE user 
-            SET fullname = :name, password = :password 
+            SET fullname = :name, password = :password, email = :email, street = :street, city = :city, state = :state, country = :country, postcode = :postcode, phone = :phone 
             WHERE id = :id";
         
         $result = $db->prepare($sql);                                  
         $result->bindParam(':id', $id, PDO::PARAM_INT);       
         $result->bindParam(':name', $name, PDO::PARAM_STR);    
         $result->bindParam(':password', $password, PDO::PARAM_STR); 
+        $result->bindParam(':email', $email, PDO::PARAM_STR); 
+        $result->bindParam(':street', $street, PDO::PARAM_STR); 
+        $result->bindParam(':city', $city, PDO::PARAM_STR); 
+        $result->bindParam(':state', $state, PDO::PARAM_STR); 
+        $result->bindParam(':country', $country, PDO::PARAM_STR); 
+        $result->bindParam(':postcode', $postcode, PDO::PARAM_STR); 
         return $result->execute();
     }
     

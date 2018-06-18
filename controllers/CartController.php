@@ -4,9 +4,17 @@ class CartController
 {
     public function actionIndex()
     {
+        if (!(isset($_SESSION['discount']))) 
+            $_SESSION['discount'] = 0;
+        
+        if (!(isset($_SESSION['dostavka'])))
+            $_SESSION['dostavka'] = 1500;
+        
         $productsInCart = false;
+       // $wishlist = false;
         
         $productsInCart = Cart::getProducts();
+       // $wishlist = Cart::getWishlsit();
         
         if ($productsInCart) {
             
@@ -16,6 +24,34 @@ class CartController
             $totalPrice = Cart::getTotalPrice($products);
         }
         
+       /* if ($pwishlist) {
+            $wishlistId = array_keys($wishlist);
+            $wishProducts = Product::getProductsByIds($wishlistId);
+        }*/
+        
+        if (isset($_POST['update_cart'])) {
+        foreach ($productIds as $id)
+        {
+            if ($_POST['product_'.$id] === 0) 
+                Cart::deleteProduct($id); 
+                    else {
+            $productsInCart[$id] = $_POST['product_'.$id];
+            
+            $_SESSION['products'] = $productsInCart;
+                    }
+        }
+            
+        }
+        if (isset($_POST['apply_coupon'])) {
+            $coupon = $_POST['coupon_code'];
+            $_SESSION['discount'] = Order::getCoupon($coupon);
+        }
+        
+        if (isset($_POST['calc_shipping'])) {
+            if ($_POST['calc_shipping_country'] == 'RU') {
+                $_SESSION['dostavka'] = 0; }
+            else $_SESSION['dostavka'] == 1500;
+        }
         
         require_once(ROOT.'/views/cart/index.php');
         return true;
@@ -27,9 +63,21 @@ class CartController
         return true;
     }
     
+    public function actionAddWish($id)
+    {   
+        echo Cart::addWishlist($id);
+        return true;
+    }
+    
     public function actionCheckout()
     {
         $result = false;
+        
+        if (!(isset($_SESSION['discount']))) 
+            $_SESSION['discount'] = 0;
+        
+        if (!(isset($_SESSION['dostavka'])))
+            $_SESSION['dostavka'] = 1500;
         
         if (isset($_POST['submit'])) {
             
@@ -93,25 +141,35 @@ class CartController
             else
                 $userComment = '';
             
+            if ($_POST['payment_method'] == 'bacs') $oplata = 'Прямой банковский перевод'; else if ($_POST['payment_method'] == 'cheque') $oplata = 'Оплата чеком'; else if ($_POST['payment_method'] == 'paypal') $oplata = 'Paypal';
+            
             if ($errors == false) {
                 
                 $productsInCart = Cart::getProducts();
                 if (User::isGuest()) {
                     $userId = false;
                 } else {
-                    $userId == User::checkLogged();
+                    $userId = User::checkLogged();
                 }
                 
-                $result = Order::save($userName, $userPhone, $userEmail, $userAddress, $userId, $productsInCart,  $userComment);
+                if (isset($_SESSION['discount'])) {
+                    $discount = $_SESSION['discount'].'%';
+                }
+                if (isset($_SESSION['dostavka']))
+                    if ($_SESSION['dostavka'] > 0) 
+                        $dostavka = 'Платная';
+                            else $dostavka = 'Бесплатная';
+                else $dostavka = 'Платная';
+                
+                $result = Order::save($userName, $userPhone, $userEmail, $userAddress, $userId, $productsInCart,  $userComment, $discount, $dostavka, $oplata);
                     
                 if ($result) {
-                    /*
-                    $adminEmail: 'novayapochtacyka@gmail.com';
+                    
+                    /*$adminEmail = 'novayapochtacyka@gmail.com';
                     $message = 'http://final/admin/orders';
                     $subject = 'Новый заказ'; */
                     
-                    //mail($adminEmail, $subject, $message);
-                    
+                   // mail($adminEmail, $subject, $message);
                     
                     Cart::clear();
                 }
@@ -172,8 +230,15 @@ class CartController
     
     public function actionDelete($id)
     {
-        
-        
-        header("Location: /cart/");
+        Cart::deleteProduct($id);
+        $referer = $_SERVER['HTTP_REFERER'];
+        header("Location: $referer");
+    }
+    
+    public function actionDeleteWish($id)
+    {
+        Cart::deleteProductWish($id);
+        $referer = $_SERVER['HTTP_REFERER'];
+        header("Location: $referer");
     }
 }

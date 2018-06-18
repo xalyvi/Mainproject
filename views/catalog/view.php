@@ -47,18 +47,22 @@
 
           <div class="col-md-6 product-single">
             <h1 class="product-single__title uppercase"><?php echo $catalogItem['title']; ?></h1>
-
+            <!-- Reviews 
             <div class="rating">
               <a href="#">3 Reviews</a>
-            </div>
+            </div> -->
 
             <span class="product-single__price">
               <ins>
-                <span class="amount"><?php echo $catalogItem['price']; ?></span>
+                <span class="amount"><?php echo 'RUB '.$catalogItem['price']; ?></span>
               </ins>
-              <del>
-                <span>$30.00</span>
-              </del>
+              <?php if (isset($catalogItem['subprice'])): ?>
+              <?php if (!($catalogItem['subprice'] == 0)): ?>
+                  <del>
+                    <span><?php echo 'RUB '.$catalogItem['subprice'] ?></span>
+                  </del>
+                <?php endif; ?>
+                <?php endif; ?>
             </span>            
 
          <!--  <div class="colors clearfix">
@@ -100,7 +104,7 @@
                 </a>
               </div>
               <div class="col">
-                <a href="#" class="btn btn-lg btn-dark product-single__add-to-wishlist">
+                <a href="#" class="btn btn-lg btn-dark product-single__add-to-wishlist" id="add-to-wish" data-id="<?php echo $catalogItem['id']; ?>">
                   <i class="ui-heart"></i>
                   <span>Лист Желаемого</span>
                 </a>
@@ -217,7 +221,7 @@
       </div> <!-- end container -->
     </section> <!-- end single product -->
 
-<?php if (isset($catalogListrelated)): ?>
+<?php if (isset($catalogListRelated)): ?>
     <!-- Related Products -->
     <section class="section-wrap pt-0 pb-40">
       <div class="container">

@@ -58,6 +58,20 @@ class CatalogController
         return true;
     }
     
+    public function actionIndexDiscount($page = 1)
+    {
+        $catalogList = array();
+        $catalogList = Catalog::getCatalogListDiscount($page);
+        
+        $total = Product::getTotalProducts();
+        
+        $pagination = new Pagination($total, $page, Catalog::SHOW_BY_DEFAULT, 'page-');
+        
+        require(ROOT.'/views/catalog/index.php');
+        
+        return true;
+    }
+    
     public function actionCategory($categoryId, $page = 1)
     {
         $catalogList = array();
@@ -104,6 +118,20 @@ class CatalogController
     {
         $catalogList = array();
         $catalogList = Catalog::getCatalogListCategoryNew($categoryId, $page);
+        
+        $total = Product::getTotalProducts();
+        
+        $pagination = new Pagination($total, $page, Catalog::SHOW_BY_DEFAULT, 'page-');
+        
+        require(ROOT.'/views/catalog/index.php');
+        
+        return true;
+    }
+    
+    public function actionCategoryDiscount($categoryId, $page = 1)
+    {
+        $catalogList = array();
+        $catalogList = Catalog::getCatalogListCategoryDiscount($categoryId, $page);
         
         $total = Product::getTotalProducts();
         

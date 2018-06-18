@@ -1,4 +1,4 @@
-<?php $host = $_SERVER[HTTP_HOST]; $site = 'Каталог'; include(ROOT.'/views/layouts/header.php'); ?>
+<?php $site = 'Каталог'; include(ROOT.'/views/layouts/header.php'); ?>
     <!-- Catalog -->
     <section class="section-wrap pt-60 pb-30 catalog">
       <div class="container">
@@ -29,8 +29,7 @@
                   <option value="2"<?php if (preg_match('/dec/', $_SERVER['REQUEST_URI'])) echo ' selected'; ?>>Цена: от Высокой к Низкой</option> <!-- Price: high to low -->
                   <option value="3"<?php if (preg_match('/inc/', $_SERVER['REQUEST_URI'])) echo ' selected'; ?>>Цена: от Низкой к Высокой</option> <!-- Price: low to high -->
                   <option value="4"<?php if (preg_match('/new/', $_SERVER['REQUEST_URI'])) echo ' selected'; ?>>По Новизне</option> <!-- By Newness -->
-                  <option value="by-popularity">по Популярности</option> <!-- By Popularity -->
-                  <option value="rating">По Рейтингу</option> <!-- By Rating -->
+                  <option value="5"<?php if (preg_match('/discount/', $_SERVER['REQUEST_URI'])) echo ' selected'; ?>>По Скидке</option> <!-- By Popularity -->
                 </select>
               </form>
               <script type="text/javascript">
@@ -45,7 +44,10 @@
                          } else if 
                          (this.options[this.selectedIndex].value == "4" && str.includes("mouse")) {
                              document.location.href = "/catalog/mouse/new";
-                         } else if      
+                         } else if
+                            (this.options[this.selectedIndex].value == "5" && str.includes("mouse")) {
+                             document.location.href = "/catalog/mouse/discount";
+                         } else if 
                         (this.options[this.selectedIndex].value == "1" && str.includes("keyboard")) {
                              document.location.href = "/catalog/keyboard";
                          } else if (this.options[this.selectedIndex].value == "2" && str.includes("keyboard")) {
@@ -53,10 +55,13 @@
                          } else if (this.options[this.selectedIndex].value == "3" && str.includes("keyboard")) {
                              document.location.href = "/catalog/keyboard/inc";
                          } else if 
-                             
                         (this.options[this.selectedIndex].value == "4" && str.includes("keyboard")) {
                              document.location.href = "/catalog/keyboard/new";
-                         } else if (this.options[this.selectedIndex].value == "1" && str.includes("headset")) {
+                         } else if 
+                             (this.options[this.selectedIndex].value == "5" && str.includes("keyboard")) {
+                             document.location.href = "/catalog/keyboard/discount";
+                         } else if
+                             (this.options[this.selectedIndex].value == "1" && str.includes("headset")) {
                              document.location.href = "/catalog/headset";
                          } else if (this.options[this.selectedIndex].value == "2" && str.includes("headset")) {
                              document.location.href = "/catalog/headset/dec";
@@ -65,7 +70,11 @@
                          } else if 
                         (this.options[this.selectedIndex].value == "4" && str.includes("headset")) { 
                              document.location.href = "/catalog/headset/new";
-                         } else if (this.options[this.selectedIndex].value == "1") {
+                         } else if
+                             (this.options[this.selectedIndex].value == "5" && str.includes("headset")) { 
+                             document.location.href = "/catalog/headset/discount";
+                         } else if
+                             (this.options[this.selectedIndex].value == "1") {
                              document.location.href = "/catalog";
                          } else if (this.options[this.selectedIndex].value == "2") {
                              document.location.href = "/catalog/dec";
@@ -73,6 +82,8 @@
                              document.location.href = "/catalog/inc";
                          } else if (this.options[this.selectedIndex].value == "4") {
                              document.location.href = "/catalog/new";
+                         } else if (this.options[this.selectedIndex].value == "5") {
+                             document.location.href = "/catalog/discount";
                          }
                      }
             </script>
@@ -110,9 +121,11 @@
                   <ins>
                     <span class="amount"><?php echo ('RUB ' .$catalogItem['price']); ?></span>
                   </ins>
+                  <?php if (!($catalogItem['subprice'] == 0)): ?>
                   <del>
-                    <span>RUB 6 990</span>
+                    <span><?php echo 'RUB '.$catalogItem['subprice'] ?></span>
                   </del>
+                  <?php endif; ?>
                 </span>
               </div> <!-- end product -->
               

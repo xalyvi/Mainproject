@@ -39,10 +39,10 @@
                 <ul>
                   <li><a href="/contacts">Контакты</a></li> <!--  -->
                   <li><a href="#">Отследить заказ</a></li> <!-- Tract Order -->
-                  <li><a href="faq">Возврат</a></li> <!-- Returns &amp; Refunds -->
+                  <li><a href="/faq">Возврат</a></li> <!-- Returns &amp; Refunds -->
                 <!--  <li><a href="#">Политика конфиденциальности</a></li> <!-- Private Policy -->
                   <li><a href="#">Информация о доставке</a></li> <!-- Shipping Info -->
-                  <li><a href="faq">Вопросы и Ответы</a></li> <!-- FAQ -->
+                  <li><a href="/faq">Вопросы и Ответы</a></li> <!-- FAQ -->
                 </ul>
               </div>
             </div>
@@ -102,7 +102,7 @@
   <script type="text/javascript" src="/template/js/owl-carousel.min.js"></script>  
   <script type="text/javascript" src="/template/js/flickity.pkgd.min.js"></script>
   <script type="text/javascript" src="/template/js/modernizr.min.js"></script>
-  <script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBOJ81T7w-Dc2BcWYxZ0zZrqIV9Orz3uSg"></script>
   <script type="text/javascript" src="/template/js/gmap3.min.js"></script>
   <script type="text/javascript" src="/template/js/scripts.js"></script>
 

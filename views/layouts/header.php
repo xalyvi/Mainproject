@@ -139,9 +139,9 @@
 -->
         <li>
          <?php if (User::isGuest()): ?>
-          <a href="user/register" class="sidenav__menu-link">Войти</a>
+          <a href="/user/action" class="sidenav__menu-link">Войти</a>
           <?php else: ?>
-          <a href="user/logout" class="sidenav__menu-link">Выйти</a>
+          <a href="/user/logout" class="sidenav__menu-link">Выйти</a>
           <?php endif; ?>
         </li>
       </ul>
@@ -201,14 +201,44 @@
               <!-- Sign Out -->
               <a href="/cabinet" class="top-bar__item">КАБИНЕТ</a>
               <a href="/user/logout" class="top-bar__item top-bar__sign-in"><i class="ui-user"></i>Выйти</a>
-                <? endif; ?>
+                <?php endif; ?>
               <!-- Wishlist -->
-              <!--
-              <a href="#" class="top-bar__item"><i class="ui-heart"></i></a>
-              -->
-
+                <div class="top-bar__item nav-cart">
+                  <i class="ui-heart"></i><span>&nbsp;(<span id="wish-count"><?php echo Cart::countWish(); ?></span>)</span>
+                  <?php $productsInWish = Cart::getWishlist();
+                  if ($productsInWish == true) {
+                      $wishIds = array_keys($productsInWish);
+                      $wishlist = Product::getProductsByIds($wishIds);
+                  } ?>
+                 <?php if ($productsInWish): ?>
+                  <div class="nav-cart__dropdown">
+                      <?php foreach ($wishlist as $wosh): ?>
+                      <div class="nav-cart__items">
+                    <div class="nav-cart__item clearfix">
+                      <div class="nav-cart__img">
+                        <a href="/catalog/product/<?php echo $wosh['id']; ?>">
+                          <img src="/template/img/shop/<?php echo $wosh['cartimg']; ?>.jpg" alt="">
+                        </a>
+                      </div>
+                      <div class="nav-cart__title">
+                        <a href="#">
+                          <?php echo $wosh['title']; ?>
+                        </a>
+                        <div class="nav-cart__price">
+                          <span>RUB <?php echo $wosh['price']; ?></span>
+                        </div>
+                      </div>
+                      <div class="nav-cart__remove">
+                        <a href="/cart/deletewish/<?php echo $wosh['id']; ?>"><i class="ui-close"></i></a>
+                      </div>
+                    </div>
+                  </div> <!-- end cart items -->
+                      <?php endforeach; ?>
+                  </div>
+                  <?php endif; ?>
+              </div>
               <div class="top-bar__item nav-cart">                
-                <a href="cart">
+                <a href="/cart">
                   <i class="ui-bag"></i>(<span id="cart-count"><?php echo Cart::countItems();  ?></span>)
                 </a>
                 <?php $productsInCart = Cart::getProducts();
@@ -216,8 +246,8 @@
                       $productsIds = array_keys($productsInCart);
                       $products = Product::getProductsByIds($productsIds);
                       $totalPrice = Cart::getTotalPrice($products);
-                  }
-                  if ($productsInCart): ?>
+                  } ?>
+                 <?php if ($productsInCart): ?>
                 <div class="nav-cart__dropdown">
                  <?php foreach($products as $product): ?>
                   <div class="nav-cart__items">
@@ -237,7 +267,7 @@
                         </div>
                       </div>
                       <div class="nav-cart__remove">
-                        <a href="#"><i class="ui-close"></i></a>
+                        <a href="/cart/delete/<?php echo $product['id']; ?>"><i class="ui-close"></i></a>
                       </div>
                     </div>
                   </div> <!-- end cart items -->
@@ -248,8 +278,8 @@
                   </div>
 
                   <div class="nav-cart__actions mt-20">
-                    <a href="cart" class="btn btn-md btn-light"><span>Посмотреть Корзину</span></a><!-- View Cart -->
-                    <a href="cart/checkout" class="btn btn-md btn-color mt-10"><span>Перейти к Оплате</span></a><!-- Proceed to Checkout -->
+                    <a href="/cart" class="btn btn-md btn-light"><span>Посмотреть Корзину</span></a><!-- View Cart -->
+                    <a href="/cart/checkout" class="btn btn-md btn-color mt-10"><span>Перейти к Оплате</span></a><!-- Proceed to Checkout -->
                   </div>
                 </div>
                 <?php endif; ?>
@@ -367,13 +397,14 @@
 
             
             <!-- Mobile Wishlist -->
-            <!--
-            <a href="#" class="nav__mobile-wishlist d-lg-none" aria-label="Mobile wishlist">
+            
+            <a href="/cabinet/wishlist" class="nav__mobile-wishlist d-lg-none" aria-label="Mobile wishlist">
               <i class="ui-heart"></i>
+              <span>(<?php echo Cart::countWish(); ?>)</span>
             </a>
 
             <!-- Mobile Cart -->
-            <a href="cart" class="nav__mobile-cart d-lg-none">
+            <a href="/cart" class="nav__mobile-cart d-lg-none">
               <i class="ui-bag"></i>
               <span class="nav__mobile-cart-amount">(<span id="cart-count"><?php echo Cart::countItems();  ?></span>)</span>
             </a>

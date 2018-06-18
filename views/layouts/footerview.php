@@ -38,11 +38,11 @@
                 <h4 class="widget-title white">помощь</h4> <!-- help -->
                 <ul>
                   <li><a href="/contacts">Контакты</a></li> <!--  -->
-                  <li><a href="#">Отследить заказ</a></li> <!-- Tract Order -->
-                  <li><a href="faq">Возврат</a></li> <!-- Returns &amp; Refunds -->
+                  <li><a href="/faq">Отследить заказ</a></li> <!-- Tract Order -->
+                  <li><a href="/faq">Возврат</a></li> <!-- Returns &amp; Refunds -->
                 <!--  <li><a href="#">Политика конфиденциальности</a></li> <!-- Private Policy -->
-                  <li><a href="#">Информация о доставке</a></li> <!-- Shipping Info -->
-                  <li><a href="faq">Вопросы и Ответы</a></li> <!-- FAQ -->
+                  <li><a href="/faq">Информация о доставке</a></li> <!-- Shipping Info -->
+                  <li><a href="/faq">Вопросы и Ответы</a></li> <!-- FAQ -->
                 </ul>
               </div>
             </div>
@@ -51,9 +51,9 @@
               <div class="widget widget_nav_menu">
                 <h4 class="widget-title white">информация</h4> <!-- information -->
                 <ul>
-                  <li><a href="contacts">Наши магазины</a></li> <!-- Our Stores -->
+                  <li><a href="/contacts">Наши магазины</a></li> <!-- Our Stores -->
                  <!-- <li><a href="#">Вакансии</a></li> <!-- Careers -->
-                  <li><a href="#">Информация о доставке</a></li> <!-- Delivery Info -->
+                  <li><a href="/cabinet">Информация о доставке</a></li> <!-- Delivery Info -->
                  <!-- <li><a href="#">Условия и Положения</a></li> <!--  Terms &amp; Conditions-->
                  <!-- <li><a href="#">Карта сайта</a></li> <!-- Site Map -->
                 </ul>
@@ -110,6 +110,13 @@
             var id = $(this).attr("data-id");
             $.post("/cart/add/"+id, {}, function (data) {
                 $("#cart-count").html(data);
+            });
+          return false;
+        });
+          $("#add-to-wish").click(function () {
+            var id = $(this).attr("data-id");
+            $.post("/cart/addwish/"+id, {}, function (data) {
+                $("#wish-count").html(data);
             });
           return false;
         });

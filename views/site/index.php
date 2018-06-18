@@ -104,11 +104,8 @@
 
             <span class="product__price">
               <ins>
-                <span class="amount"><?php echo $catalogItem['price']; ?></span>
+                <span class="amount">RUB <?php echo $catalogItem['price']; ?></span>
               </ins>
-              <del>
-                <span>RUB 11 990</span>
-              </del>
             </span>
           </div> <!-- end product -->
           

@@ -5,8 +5,8 @@
             <div class="col-md-6 pb-100 mb-110">
                 <h2>Кабинет пользователя</h2>
                 <ul>
-                    <li><a href="cabinet/edit">Редактировать данные</a></li>
-                    <li><a href="#">Список покупок</a></li>
+                    <li><a href="/cabinet/edit">Редактировать данные</a></li>
+                    <li><a href="/cabinet/story">Список покупок</a></li>
                 </ul>
             </div>
         </div>

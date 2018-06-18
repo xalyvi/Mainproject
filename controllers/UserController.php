@@ -10,7 +10,7 @@ class UserController
         
         if (isset($_POST['register'])) {
             $email = $_POST['emailin'];
-            $password= $_POST['passwordin'];
+            $password = $_POST['passwordin'];
             
             $errors1 = false;
             
@@ -18,7 +18,7 @@ class UserController
                 $errors1[] = 'Неправильный email';
             }
             if (!User::checkPassword($password)) {
-                $errors1[] = 'Пароль не должен быть кароче 6-ити символов';
+                $errors1[] = 'Пароль не должен быть кароче 6-ти символов';
             }
             if (User::checkEmailExists($email)) {
                 $errors1[] = 'Такой email уже используется';
@@ -59,9 +59,8 @@ class UserController
     
     public function actionLogout()
     {
-        session_start();
         unset($_SESSION["user"]);
-        header("Location:  /");
+        header("Location: /home/");
     }
     
 }

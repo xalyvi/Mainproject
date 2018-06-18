@@ -41,21 +41,19 @@ class Router
                 
                 $controllerFile = ROOT . '/controllers/' . $controllerName . '.php';
                 
-                if (file_exists($controllerFile)) 
-                    include_once($controllerFile); /*
+                if (file_exists($controllerFile)) {
+                    include_once($controllerFile); 
                 } else {
                     self::ErrorPage404();
-                } */
+                } 
                 
                 $controllerObject = new $controllerName;
                 
-               /* if (method_exists($controllerObject, $actionName)) {
+                if (method_exists($controllerObject, $actionName)) {
                 $result = call_user_func_array(array($controllerObject, $actionName), $parameters);} else
                 {
                     self::ErrorPage404();
-                } */ 
-                
-                $result = call_user_func_array(array($controllerObject, $actionName), $parameters);
+                }  
                     
                 if ($result != null) {
                     break;
